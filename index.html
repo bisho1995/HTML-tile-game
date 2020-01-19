@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Tile Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+<body>
+    <article>
+        <header>
+            <h1>NUBLE</h1>
+        </header>
+        <section>
+            <h2>Instructions</h2>
+            <ul>
+                <li>You can only move the empty tile to any of the other tiles.</li>
+                <li>Once you drag and drop the empty tile the adjacent cell is going to move</li>
+                <li>You need to solve the grid</li>
+                <li>You can move the cells either horizontally or vertically</li>
+            </ul>
+        </section>
+        <section id="game-board" class="horizontal-center" ></section>
+        <section id="difficulty-level">
+            <button onclick="resetGame(3)">Easy</button>
+            <button onclick="resetGame(5)">Medium</button>
+            <button onclick="resetGame(8)">Hard</button>
+            <button onclick="">Custom</button>
+        </section>
+    </article>
+</body>
+</html>

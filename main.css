@@ -1,0 +1,73 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    color: #fff;
+    background: #fff;
+}
+header {
+    text-align: center;
+    background-color: #ffc400;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+article {
+    background-color: #616161;
+    max-width: 960px;
+    width: 100%;
+    margin: 0px auto;
+    padding: 0 20px;
+    min-height: 100vh;
+    padding: 20px;
+}
+section {
+    margin: 10px 0;
+}
+.row {
+    display: flex;
+}
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    width: 60px;
+    height: 60px;
+    font-weight: bold;
+    color: black;
+    background-color: #fff;
+    margin: 4px;
+    border-radius: 5px;
+}
+
+#free-cell {
+    cursor: move;
+    background-color: #ffff00;
+}
+
+.horizontal-center {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#game-board {
+    display: inline-block;
+    background-color: #3d5afe;
+    border: 2px solid black;
+}
+#difficulty-level {
+    display: flex;
+    justify-content: center;
+}
+#difficulty-level button {
+    margin: 0 10px;
+    border: 2px solid #00e676;
+    color: #000;
+    background-color: #fff;
+    padding: 5px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
