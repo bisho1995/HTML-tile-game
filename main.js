@@ -2,8 +2,8 @@ const board = (function _genBoard(config) {
     let instance = null
     class Board {
 
-        board = {}
         constructor() {
+            this.board = {}
             this.makeBoard.call(this, 3)
         }
 
@@ -62,10 +62,10 @@ const board = (function _genBoard(config) {
     instance = new Board()
 
     return instance
-})()
+  })()
 
 
-const game = (function(){
+  const game = (function(){
     class Game {
         handleDrop(e) {
             const target = e.toElement
@@ -147,11 +147,11 @@ const game = (function(){
     }
 
     return new Game()
-})()
+  })()
 
-const DEFAULT_ROWS = 3
+  const DEFAULT_ROWS = 3
 
-function onCustomGame() {
+  function onCustomGame() {
     let rows;
     try {
         rows = parseInt(prompt("Enter number of rows"))
@@ -159,11 +159,15 @@ function onCustomGame() {
         rows = DEFAULT_ROWS
     }
     game.resetGame(rows)
-}
+  }
 
-function main() {
+  function main() {
     game.resetGame(DEFAULT_ROWS)
-}
+  }
 
 
-document.addEventListener('DOMContentLoaded', main)
+  if( document.readyState !== 'loading' ) {
+      main();
+  } else {
+      document.addEventListener('DOMContentLoaded',main);
+  }
