@@ -1,15 +1,70 @@
-function makeBoard(rows) {
-    return {
-        difficulty: 'easy',
-        rows: rows,
-        state: null,
-        freeCell: {
-            row: -1,
-            col: -1
+const board = (function _genBoard(config) {
+    let instance = null
+    class Board {
+
+        board = {}
+        constructor() {
+            this.makeBoard.call(this, 3)
+        }
+
+
+        makeBoard(rows) {
+            this.board =  {
+                difficulty: 'easy',
+                rows: rows,
+                state: null,
+                freeCell: {
+                    row: -1,
+                    col: -1
+                }
+            }
+
+            this.createGameState.call(this,rows)
+        }
+
+        createGameState(rows) {
+            const max = rows*rows - 1;
+
+            this.board.state = new Array(rows).fill(-1).map(()=>new Array(rows).fill(-1))
+
+            for(let i = 1; i <= max; i++) {
+                let r = Math.floor(Math.random()*rows)
+                let c = Math.floor(Math.random()*rows)
+
+                while(this.board.state[r][c] != -1) {
+                    r = Math.floor(Math.random()*rows)
+                    c = Math.floor(Math.random()*rows)
+                }
+
+                this.board.state[r][c] = i
+            }
+            this.board.state = this.board.state.map((ar,r)=>ar.map((e,c)=> {
+                if(e==-1){
+                    this.board.freeCell = {
+                        row: r,
+                        cell: c
+                    }
+                    return ''
+                }
+                return e
+            }))
+        }
+
+        getState() {
+            return this.board.state
+        }
+
+        setState(row, col,value) {
+            this.board.state[row][col] = value
         }
     }
-}
-let board = {}
+
+    instance = new Board()
+
+    return instance
+})()
+
+
 
 function handleDrop(e) {
     const target = e.toElement
@@ -50,7 +105,7 @@ function handleDragover(e) {
 }
 
 function createGameBoard() {
-    const {state} = board
+    const state = board.getState()
 
     const container = document.createElement('div')
     container.id = "board"
@@ -64,7 +119,7 @@ function createGameBoard() {
             cell.classList.add('cell')
             cell.setAttribute('data-row',i)
             cell.setAttribute('data-column',j)
-            if(board.state[i][j] === '') {
+            if(state[i][j] === '') {
                 cell.id="free-cell"
                 cell.draggable = true
             } else {
@@ -79,34 +134,6 @@ function createGameBoard() {
     document.getElementById('game-board').innerHTML = ''
     document.getElementById('game-board').appendChild(container)
 }
-function createGameState() {
-    const {rows} = board
-    const max = rows*rows - 1;
-
-    board.state = new Array(rows).fill(-1).map(()=>new Array(rows).fill(-1))
-
-    for(let i = 1; i <= max; i++) {
-        let r = Math.floor(Math.random()*rows)
-        let c = Math.floor(Math.random()*rows)
-
-        while(board.state[r][c] != -1) {
-            r = Math.floor(Math.random()*rows)
-            c = Math.floor(Math.random()*rows)
-        }
-
-        board.state[r][c] = i
-    }
-    board.state = board.state.map((ar,r)=>ar.map((e,c)=> {
-        if(e==-1){
-            board.freeCell = {
-                row: r,
-                cell: c
-            }
-            return ''
-        }
-        return e
-    }))
-}
 
 function main() {
     resetGame(3)
@@ -114,8 +141,7 @@ function main() {
 
 function resetGame(rows) {
     console.log("initiating world...")
-    board = makeBoard(rows)
-    createGameState()
+    board.makeBoard(rows)
     console.log("creating game board...")
     createGameBoard()
 

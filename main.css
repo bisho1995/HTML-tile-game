@@ -21,6 +21,8 @@ article {
     padding: 0 20px;
     min-height: 100vh;
     padding: 20px;
+    width: 90%;
+    margin: 0 auto;
 }
 section {
     margin: 10px 0;
@@ -61,9 +63,10 @@ section {
 #difficulty-level {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
 }
 #difficulty-level button {
-    margin: 0 10px;
+    margin: 5px 10px;
     border: 2px solid #00e676;
     color: #000;
     background-color: #fff;
