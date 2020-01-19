@@ -65,87 +65,105 @@ const board = (function _genBoard(config) {
 })()
 
 
+const game = (function(){
+    class Game {
+        handleDrop(e) {
+            const target = e.toElement
+            const freeCell = document.getElementById("free-cell")
+            try {
+                const targetRow = parseInt(target.getAttribute('data-row'))
+                const targetColumn =parseInt(target.getAttribute('data-column'))
 
-function handleDrop(e) {
-    const target = e.toElement
-    const freeCell = document.getElementById("free-cell")
-    try {
-        const targetRow = parseInt(target.getAttribute('data-row'))
-        const targetColumn =parseInt(target.getAttribute('data-column'))
+                const freeCellRow = parseInt(freeCell.getAttribute('data-row'))
+                const freeCellColumn = parseInt(freeCell.getAttribute('data-column'))
 
-        const freeCellRow = parseInt(freeCell.getAttribute('data-row'))
-        const freeCellColumn = parseInt(freeCell.getAttribute('data-column'))
-
-        const dist = Math.sqrt((targetRow-freeCellRow)**2 + (targetColumn-freeCellColumn)**2)
-        if(dist!==1){
-            throw new Error('invalid move')
-        }
-    }catch(err) {
-        alert('Oops invalid move')
-        return;
-    }
-
-    freeCell.id = ""
-    target.id = "free-cell"
-    freeCell.innerText = target.innerText
-    target.innerText = ''
-
-    target.draggable = true
-    freeCell.draggable = false
-
-    freeCell.ondrop = handleDrop
-    freeCell.ondragover = handleDragover
-
-    target.ondrop = null
-    target.ondragover = null
-
-}
-function handleDragover(e) {
-    e.preventDefault()
-}
-
-function createGameBoard() {
-    const state = board.getState()
-
-    const container = document.createElement('div')
-    container.id = "board"
-    for(let i = 0; i < state.length; i+=1) {
-        const row = document.createElement('div')
-        row.classList.add('row')
-
-        for(let j = 0; j < state[0].length; j++) {
-            const cell = document.createElement('div')
-            cell.textContent = state[i][j]
-            cell.classList.add('cell')
-            cell.setAttribute('data-row',i)
-            cell.setAttribute('data-column',j)
-            if(state[i][j] === '') {
-                cell.id="free-cell"
-                cell.draggable = true
-            } else {
-                cell.ondrop = handleDrop
-                cell.ondragover = handleDragover
+                const dist = Math.sqrt((targetRow-freeCellRow)**2 + (targetColumn-freeCellColumn)**2)
+                if(dist!==1){
+                    throw new Error('invalid move')
+                }
+            }catch(err) {
+                alert('Oops invalid move')
+                return;
             }
 
-            row.appendChild(cell)
+            freeCell.id = ""
+            target.id = "free-cell"
+            freeCell.innerText = target.innerText
+            target.innerText = ''
+
+            target.draggable = true
+            freeCell.draggable = false
+
+            freeCell.ondrop = this.handleDrop
+            freeCell.ondragover = this.handleDragover
+
+            target.ondrop = null
+            target.ondragover = null
+
         }
-        container.appendChild(row)
+        handleDragover(e) {
+            e.preventDefault()
+        } // end of handleDragover
+
+        createGameBoard() {
+            const state = board.getState()
+
+            const container = document.createElement('div')
+            container.id = "board"
+            for(let i = 0; i < state.length; i+=1) {
+                const row = document.createElement('div')
+                row.classList.add('row')
+
+                for(let j = 0; j < state[0].length; j++) {
+                    const cell = document.createElement('div')
+                    cell.textContent = state[i][j]
+                    cell.classList.add('cell')
+                    cell.setAttribute('data-row',i)
+                    cell.setAttribute('data-column',j)
+                    if(state[i][j] === '') {
+                        cell.id="free-cell"
+                        cell.draggable = true
+                    } else {
+                        cell.ondrop = this.handleDrop
+                        cell.ondragover = this.handleDragover
+                    }
+
+                    row.appendChild(cell)
+                }
+                container.appendChild(row)
+            }
+            document.getElementById('game-board').innerHTML = ''
+            document.getElementById('game-board').appendChild(container)
+        } // end of createGameBoard
+
+        resetGame(rows) {
+            console.log("initiating world...")
+            board.makeBoard(rows)
+            console.log("creating game board...")
+            this.createGameBoard()
+
+            console.log(board)
+        } // end of resetGame
     }
-    document.getElementById('game-board').innerHTML = ''
-    document.getElementById('game-board').appendChild(container)
+
+    return new Game()
+})()
+
+const DEFAULT_ROWS = 3
+
+function onCustomGame() {
+    let rows;
+    try {
+        rows = parseInt(prompt("Enter number of rows"))
+    } catch (error) {
+        rows = DEFAULT_ROWS
+    }
+    game.resetGame(rows)
 }
 
 function main() {
-    resetGame(3)
+    game.resetGame(DEFAULT_ROWS)
 }
 
-function resetGame(rows) {
-    console.log("initiating world...")
-    board.makeBoard(rows)
-    console.log("creating game board...")
-    createGameBoard()
-
-    console.log(board)
-}
 
 document.addEventListener('DOMContentLoaded', main)
