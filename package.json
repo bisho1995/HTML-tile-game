@@ -1,0 +1,16 @@
+{
+  "name": "tile-game",
+  "version": "1.0.0",
+  "description": "tile game",
+  "main": "index.html",
+  "repository": "git@github.com:bisho1995/HTML-tile-game.git",
+  "author": "bisvarup <bisvarup.mukherjee@tracxn.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "parcel index.html --open",
+    "build": "parcel build index.html"
+  },
+  "devDependencies": {
+    "parcel": "^1.12.4"
+  }
+}
